@@ -1,5 +1,5 @@
-# todo-app
-A small todo application built in Odin using raylib/raygui. 
+# Todo Application
+A small todo application built in Odin using raylib/raygui. You can make new todos, save them to an external file and delete them when finished. I implemented a scrolling functionality so that many can be up at one point in time.
 
 I did this as a way to learn both Odin and raylib better - there are likely some issues/bugs that I haven't caught. 
 
