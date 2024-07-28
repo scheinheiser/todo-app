@@ -23,36 +23,36 @@ text_input : [1024]u8
 
 todo_frame :: proc(x_pos : i32, y_pos : i32, identifier : string, text : cstring, number : i32) {
 	frame_rec := rl.Rectangle{x=cast(f32)x_pos,
-							  y=cast(f32)y_pos,
-							  width=FRAME_WIDTH,
-							  height=FRAME_HEIGHT}
+				  y=cast(f32)y_pos,
+				  width=FRAME_WIDTH,
+				  height=FRAME_HEIGHT}
 
 	rl.DrawRectangleRec(rec=frame_rec,
-						color=rl.Color{209, 200, 188, 255})
+			    color=rl.Color{209, 200, 188, 255})
 
 	rl.DrawRectangleLines(posX=  cast(i32)frame_rec.x,
-						  posY=  cast(i32)frame_rec.y,
-						  width= cast(i32)frame_rec.width,
-						  height=cast(i32)frame_rec.height,
-						  color=rl.BLACK)
+			      posY=  cast(i32)frame_rec.y,
+			      width= cast(i32)frame_rec.width,
+			      height=cast(i32)frame_rec.height,
+			      color=rl.BLACK)
 
 	rl.DrawText(text=rl.TextFormat("Todo #%i", number),
-				posX=cast(i32)frame_rec.x + 10,
-				posY=cast(i32)frame_rec.y + 10,
-				fontSize=20,
-				color=rl.BLACK)
+		    posX=cast(i32)frame_rec.x + 10,
+		    posY=cast(i32)frame_rec.y + 10,
+		    fontSize=20,
+		    color=rl.BLACK)
 
 	rl.DrawText(text=text,
-				posX=cast(i32)frame_rec.x + 20,
-				posY=cast(i32)frame_rec.y + 35,
-				fontSize=18,
-				color=rl.BLACK)
+	            posX=cast(i32)frame_rec.x + 20,
+		    posY=cast(i32)frame_rec.y + 35,
+		    fontSize=18,
+		    color=rl.BLACK)
 
 	if rl.GuiButton(bounds=rl.Rectangle{x=frame_rec.x + ((frame_rec.width/2) - (BUTTON_WIDTH/2)),
-								  	 	y=frame_rec.y + 60,
-										width=BUTTON_WIDTH,
-								  	 	height=BUTTON_HEIGHT},
-					text="#143#Delete To-do") {delete_key(&todo_values, identifier)}
+					    y=frame_rec.y + 60,
+					    width=BUTTON_WIDTH,
+					    height=BUTTON_HEIGHT},
+			text="#143#Delete To-do") {delete_key(&todo_values, identifier)}
 	// This button deletes the todo from the todo_values map, causing it to not be re-drawn next frame.
 }
 // A frame for the todo structure - this makes it easy to create multiple of them.
@@ -67,10 +67,10 @@ build_todos :: proc(y_pos : i32) {
 		if frame_number == 1 do y_pos += OFFSET
 
 		 todo_frame(x_pos=0,
-		   		    y_pos=y_pos,
-					identifier=key,
+			    y_pos=y_pos,
+			    identifier=key,
 		            text=rl.TextFormat("%v", value),
-		  		    number=frame_number)
+			    number=frame_number)
 
 		y_pos += FRAME_HEIGHT + OFFSET
 		frame_number += 1
@@ -81,24 +81,24 @@ build_todos :: proc(y_pos : i32) {
 
 nav_bar :: proc(choice : ^MenuOpt) {
 	container_bar := rl.Rectangle{x=0,
-								  y=0,
-								  width=500,
-								  height=25}
+				      y=0,
+				      width=500,
+				      height=25}
 
 	rl.DrawRectangleRec(container_bar,
-					 	color=rl.Color{169, 176, 184, 255})
+	           	    color=rl.Color{169, 176, 184, 255})
 
 	if rl.GuiButton(bounds=rl.Rectangle{x=500 - (BUTTON_WIDTH*1.6),
-								     	y=     container_bar.y,
-									    width= BUTTON_WIDTH * 1.6,
-									    height=container_bar.height},
-					text="#185#Return to Home Screen") {choice^ = MenuOpt.DEFAULT}
+					    y=     container_bar.y,
+		        		    width= BUTTON_WIDTH * 1.6,
+		       			    height=container_bar.height},
+			text="#185#Return to Home Screen") {choice^ = MenuOpt.DEFAULT}
 
 	if rl.GuiButton(bounds=rl.Rectangle{x=     container_bar.x,
-									 	y=     container_bar.y,
-										width= BUTTON_WIDTH * 1.6,
-									 	height=container_bar.height},
-					text="#218#New To-do")
+					    y=     container_bar.y,
+					    width= BUTTON_WIDTH * 1.6,
+					    height=container_bar.height},
+			text="#218#New To-do")
 		{
 			show_text_input = true
 			show_message = false
@@ -106,10 +106,10 @@ nav_bar :: proc(choice : ^MenuOpt) {
 	}
 
 	if rl.GuiButton(bounds=rl.Rectangle{x=(BUTTON_WIDTH * 1.6) + 10,
-									 	y=container_bar.y,
-										width=BUTTON_WIDTH * 1.6,
-										height=container_bar.height},
-					text="#2#Save To-dos")
+					    y=container_bar.y,
+					    width=BUTTON_WIDTH * 1.6,
+					    height=container_bar.height},
+			text="#2#Save To-dos")
 		{
 			show_message = hp.save_data(FILENAME, todo_values)
 			show_text_input = false
@@ -145,9 +145,9 @@ main_app_screen :: proc(choice : ^MenuOpt) {
 
 	if show_message {
 		click := rl.GuiMessageBox(bounds=rl.Rectangle{100, 150, 300, 100},
-							 	  title="#218#File Notification",
-								  message="The to-dos were saved successfully!",
-							 	  buttons="Ok")
+					  title="#218#File Notification",
+					  message="The to-dos were saved successfully!",
+					  buttons="Ok")
 
 		if click > 0 do show_message = false
 		// If the user presses the 'Ok' button, the messagebox will no longer be displayed.
@@ -155,12 +155,12 @@ main_app_screen :: proc(choice : ^MenuOpt) {
 
 	if show_text_input {
 		result := rl.GuiTextInputBox(bounds=rl.Rectangle{100, 120, 300, 130},
-								     title="Important",
-								     message="Enter the task below:",
-								     buttons="#112#Enter;#113#Cancel",
-								     text=transmute(cstring)&text_input,
-								     textMaxSize=1024,
-								     secretViewActive=&show_text_input)
+					     title="Important",
+				     	     message="Enter the task below:",
+					     buttons="#112#Enter;#113#Cancel",
+					     text=transmute(cstring)&text_input,
+					     textMaxSize=1024,
+					     secretViewActive=&show_text_input)
 
 		if result == 1 {
 			todo := json.Value(string(transmute(cstring)&text_input))
